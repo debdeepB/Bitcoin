@@ -21,7 +21,6 @@ defmodule BlockchainUtils do
 
   def mine_block(block) do
     if (!String.starts_with?(Base.encode16(block.hash), "00")) do
-      IO.puts Base.encode16(block.hash)
       nonce = block.nonce
       block = Map.put(block, :nonce, nonce + 1)
       block = Map.put(block, :hash, calculate_hash(block))
