@@ -16,7 +16,7 @@ defmodule CryptoUtils do
     :crypto.verify(:ecdsa, :sha256, message, signature, [keypair.public_key, :secp256k1])
   end
 
-  def calculateHash(data) do
+  def calculate_hash(data) do
     :crypto.hash(:sha, data)
   end
   
