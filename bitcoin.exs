@@ -7,3 +7,12 @@ blockchain = [genesis_block]
 :global.register_name("peer1", peer1)
 :global.register_name("peer2", peer2)
 :global.register_name("peer3", peer3)
+
+keypair1 = CryptoUtils.generate_keypair
+keypair2 = CryptoUtils.generate_keypair
+
+tx = Transaction.create_transaction(keypair1.public_key, keypair2.public_key, 100.0)
+tx = Transaction.sign_transaction(tx, keypair1)
+IO.puts Transaction.is_valid(tx)
+tx = Map.put(tx, :amount, 1000.0)
+IO.puts Transaction.is_valid(tx)

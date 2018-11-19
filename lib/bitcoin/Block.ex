@@ -8,7 +8,7 @@ defmodule Block do
     serialized_block = previous_hash <> Integer.to_string(timestamp) <> Poison.encode!(transactions) <> Integer.to_string(nonce)
     %{
       previous_hash: previous_hash,
-      timestamp: Integer.to_string(timestamp),
+      timestamp: timestamp,
       transactions: transactions,
       nonce: nonce,
       hash: serialized_block |> CryptoUtils.calculate_hash
@@ -16,7 +16,7 @@ defmodule Block do
   end
 
   def calculate_hash(block) do
-    block.previous_hash <> block.timestamp <> Poison.encode!(block.transactions) <> Integer.to_string(block.nonce) |> CryptoUtils.calculate_hash
+    block.previous_hash <> Integer.to_string(block.timestamp) <> Poison.encode!(block.transactions) <> Integer.to_string(block.nonce) |> CryptoUtils.calculate_hash
   end
 
   def mine_block(block) do
