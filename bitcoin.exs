@@ -1,5 +1,5 @@
 # start the simulation
-genesis_block = BlockchainUtils.create_genesis_block
+genesis_block = Block.create_genesis_block
 blockchain = [genesis_block]
 {:ok, peer1} = Peer.start_link(blockchain)
 {:ok, peer2} = Peer.start_link(blockchain)

@@ -1,4 +1,4 @@
-defmodule BlockchainUtils do
+defmodule Block do
   def create_genesis_block do
     create_block(:os.system_time(:millisecond), [], "")
   end
