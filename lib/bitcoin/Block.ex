@@ -20,7 +20,7 @@ defmodule Block do
   end
 
   def mine_block(block) do
-    if (!String.starts_with?(Base.encode16(block.hash), "00")) do
+    if (!String.starts_with?(block.hash, "00")) do
       nonce = block.nonce
       block = Map.put(block, :nonce, nonce + 1)
       block = Map.put(block, :hash, calculate_hash(block))
