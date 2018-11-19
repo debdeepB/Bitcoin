@@ -29,4 +29,8 @@ defmodule Block do
       block
     end
   end
+
+  def has_valid_transactions(block) do
+    Enum.all?(block.transactions, fn tx -> Transaction.is_valid(tx) end)
+  end
 end
