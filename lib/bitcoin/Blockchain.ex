@@ -44,4 +44,21 @@ defmodule Blockchain do
     Block.has_valid_transactions(block)
   end
 
+  def get_balance_of_address(blockchain, address) do
+    Enum.reduce(blockchain, 0, fn block, acc -> acc + get_balance_block(block, address) end)
+  end
+
+  def get_balance_block(block, address) do
+    Enum.reduce(block.transactions, 0, fn tx, acc ->
+      cond do
+        tx.from_address == address ->
+          acc - tx.amount
+        tx.to_address == address ->
+          acc + tx.amount
+        true ->
+          acc
+      end
+    end)
+  end
+
 end
