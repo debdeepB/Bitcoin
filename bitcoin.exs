@@ -14,6 +14,10 @@ initial_state = %{
 :global.register_name("peer-2", peer2)
 :global.register_name("peer-3", peer3)
 
+Peer.mine(peer1)
+bc = :sys.get_state(peer1).blockchain
+
+
 # keypair1 = CryptoUtils.generate_keypair
 # keypair2 = CryptoUtils.generate_keypair
 

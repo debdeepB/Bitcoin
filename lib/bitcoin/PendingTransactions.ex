@@ -13,6 +13,10 @@ defmodule PendingTransactions do
     GenServer.call(pid, :get_all)
   end
 
+  def reset(pid) do
+    GenServer.call(pid, :reset)
+  end
+
   @impl true
   def init(queue) do
     {:ok, queue}
@@ -21,6 +25,10 @@ defmodule PendingTransactions do
   @impl true
   def handle_call(:get_all, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_call(:reset, _from, _state) do
+    {:reply, [], []}
   end
 
   @impl true

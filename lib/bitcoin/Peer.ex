@@ -27,6 +27,7 @@ defmodule Peer do
     Enum.each(1..num_peers, fn id ->
       Peer.validate(:global.whereis_name("peer-" <> Integer.to_string(id)), mined_block)
     end)
+    PendingTransactions.reset(:global.whereis_name("pending_transactions"))
     {:noreply, state}
   end
 

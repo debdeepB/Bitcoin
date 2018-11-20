@@ -25,4 +25,23 @@ defmodule Blockchain do
     Block.mine_block(block)
   end
 
+  def is_valid([prev_block | [curr_block | tail]]) do
+    cond do
+      curr_block.previous_hash != prev_block.hash ->
+        false
+      !Block.has_valid_transactions(curr_block) ->
+        false
+      Block.calculate_hash(curr_block) != curr_block.hash ->
+        false
+      true ->
+        is_valid([curr_block | tail])
+    end
+  end
+
+  def is_valid([]), do: true
+
+  def is_valid([block | []]) do
+    Block.has_valid_transactions(block)
+  end
+
 end
