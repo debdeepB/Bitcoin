@@ -24,6 +24,7 @@ defmodule Bitcoin.BlockChainTest do
     assert :sys.get_state(pending_transactions) == []
     blockchain1 = :sys.get_state(peer1).blockchain
     blockchain2 = :sys.get_state(peer2).blockchain
+    blockchain3 = :sys.get_state(peer3).blockchain
     assert blockchain1 == blockchain2
   end
 
@@ -40,6 +41,23 @@ defmodule Bitcoin.BlockChainTest do
     tampered_block = Map.put(block, :timestamp, 1)
     tampered_blockchain = List.replace_at(blockchain, -1, tampered_block)
     assert Blockchain.is_valid(tampered_blockchain) == false
+  end
+
+  test "check balance of an address", %{ peer1: peer1, peer2: peer2, peer3: peer3, pending_transactions: pending_transactions} do
+    Peer.mine(peer1)
+    :timer.sleep(1000)
+    bc = :sys.get_state(peer1).blockchain
+    peer1_balance = Blockchain.get_balance_of_address(bc, :sys.get_state(peer1).keypair.public_key)
+    peer2_balance = Blockchain.get_balance_of_address(bc, :sys.get_state(peer2).keypair.public_key)
+    # send some btc's to peer2
+    amount = 5.0
+    Peer.perform_transaction(peer1, {:sys.get_state(peer2).keypair.public_key, amount})
+    Peer.mine(peer3)
+    :timer.sleep(1000)
+    bc = :sys.get_state(peer1).blockchain
+    :timer.sleep(1000)
+    assert Blockchain.get_balance_of_address(bc, :sys.get_state(peer1).keypair.public_key) == peer1_balance - amount
+    assert Blockchain.get_balance_of_address(bc, :sys.get_state(peer2).keypair.public_key) == peer2_balance + amount
   end
 
 end

@@ -5,6 +5,10 @@ defmodule Peer do
     GenServer.start_link(__MODULE__, state)
   end
 
+  def perform_transaction(pid, {to_address, amount}) do
+    GenServer.cast(pid, {:perform_transaction, to_address, amount})
+  end
+
   def mine(pid) do
     GenServer.cast(pid, {:mine})
   end
@@ -16,6 +20,13 @@ defmodule Peer do
   def init(state) do
     state = Map.put(state, :keypair, CryptoUtils.generate_keypair)
     {:ok, state}
+  end
+
+  def handle_cast({:perform_transaction, to_address, amount}, state) do
+    tx = Transaction.create_transaction(state.keypair.public_key, to_address, amount)
+    tx = Transaction.sign_transaction(tx, state.keypair)
+    Blockchain.add_transaction(:global.whereis_name("pending_transactions"), tx)
+    {:noreply, state}
   end
 
   def handle_cast({:mine}, state) do
