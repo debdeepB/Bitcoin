@@ -7,7 +7,12 @@ Ali Akbar 8498-3349
 
 ## Setup
 
-Test cases have been written and are there in the test/bitcoin folder.
+Test cases (both unit and functional) have been written and are there in the test/bitcoin folder.
+
+Get the dependencies. "poison" is used for encoding maps to json.
+```bash
+mix deps.get
+```
 
 To run all tests run:
 
@@ -16,6 +21,10 @@ mix test
 ```
 
 ## Functionalities implemented
+
+### Crypto Features
+
+Every Peer would have it's own public and private key. While signing a transaction, the peer signs it with it's private key and while verifying a transaction it is done with the public key given in the from_address field in the transaction. The erlang crypto library is used for signing and verification and hashing and the elliptic curve secp256k1 is used as is given in the bitcoin documentation.
 
 ### Mine Bitcoins
 
@@ -27,13 +36,13 @@ Wallets are implemented and peers in the network can check their balance.
 
 ### Transact Bitcoins
 
-Peers can perform transactions and send bitcoins to each other. Everything gets recorded in the transaction ledger (PendingTransactions)which gets mined when a peer mines a new block.
+Peers can perform transactions after digitally signing them and send bitcoins to each other. Everything gets recorded in the transaction ledger (PendingTransactions)which gets mined when a peer mines a new block.
 
 ## Bonus Features
 
 ### Distributed functionality
 
-Each peer has it's own copy of blockchain. Each peer can mine and transact bitcoins. Whenever a peer mines a block, it adds it to it's blockchain and broadcasts it to the rest of the peers. All the other peers validates the incoming block and if it is valid then they add it to their respective blockchains.
+Each peer has it's own copy of blockchain. Each peer can mine and transact bitcoins. Whenever a peer mines a block, it adds it to it's blockchain and broadcasts it to the rest of the peers. All the other peers validates the incoming block and if it is valid then they add it to their respective blockchains. Peers can mine and transact bitcoins simulataneously. The blockchain increases dynamically and remains valid through out it's lifecycle.
 
 
 ## Installation
