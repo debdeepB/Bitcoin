@@ -1,13 +1,14 @@
 # Bitcoin
 
-## Members
+This is an implementation of a small subset of the Bitcoin protocol in Elixir. Much of the implementation details and inspiration have been taken from [Savjee Coin](https://www.savjee.be/2017/07/Writing-tiny-blockchain-in-JavaScript/). This could be treated as a distributed version of [Savjee Coin](https://www.savjee.be/2017/07/Writing-tiny-blockchain-in-JavaScript/).
 
-Debdeep Basu 4301 - 3324  
-Ali Akbar 8498-3349
+
+For those of you who want to understand what Blockchain is all about I'd recommend you read [this](https://www.savjee.be/2017/07/Writing-tiny-blockchain-in-JavaScript/) blogpost and then come back to this to understand how it could be applied in a distributed setting.
+
+Much thanks to [Savjee](https://github.com/Savjee) for making Blockchain super easy to understand!
+
 
 ## Setup
-
-Test cases (both unit and functional) have been written and are there in the test/bitcoin folder.
 
 Get the dependencies. "poison" is used for encoding maps to json.
 ```bash
@@ -20,9 +21,13 @@ To run all tests run:
 mix test
 ```
 
-## Functionalities implemented
+## Blockchain Features
 
-### Crypto Features
+### Distributed functionality
+
+Each peer has it's own copy of blockchain. Each peer can mine and transact bitcoins. Whenever a peer mines a block, it adds it to it's blockchain and broadcasts it to the rest of the peers. All the other peers validates the incoming block and if it is valid then they add it to their respective blockchains. Peers can mine and transact bitcoins simulataneously. The blockchain increases dynamically and remains valid through out it's lifecycle.
+
+### Crypto
 
 Every Peer would have it's own public and private key. While signing a transaction, the peer signs it with it's private key and while verifying a transaction it is done with the public key given in the from_address field in the transaction. The erlang crypto library is used for signing and verification and hashing and the elliptic curve secp256k1 is used as is given in the bitcoin documentation.
 
@@ -37,12 +42,6 @@ Wallets are implemented and peers in the network can check their balance.
 ### Transact Bitcoins
 
 Peers can perform transactions after digitally signing them and send bitcoins to each other. Everything gets recorded in the transaction ledger (PendingTransactions)which gets mined when a peer mines a new block.
-
-## Bonus Features
-
-### Distributed functionality
-
-Each peer has it's own copy of blockchain. Each peer can mine and transact bitcoins. Whenever a peer mines a block, it adds it to it's blockchain and broadcasts it to the rest of the peers. All the other peers validates the incoming block and if it is valid then they add it to their respective blockchains. Peers can mine and transact bitcoins simulataneously. The blockchain increases dynamically and remains valid through out it's lifecycle.
 
 
 ## Installation
